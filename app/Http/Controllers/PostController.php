@@ -81,35 +81,31 @@ class PostController extends Controller
         return view('admin.posts.edit', compact('post'));
     }
 
-    public function update(StoreUpdatePost $request, $id) //StoreUpdatePost Validaçoes, se validar tudo cai no $request
+    public function update(StoreUpdatePost $request, $id)
     {
-        if(!$post = Post::find($id)) {
+        if (!$post = Post::find($id)) {
             return redirect()->back();
         }
 
         $data = $request->all();
 
         if ($request->image && $request->image->isValid()) {
-            //Deletar a imagem anterior
-           if (Storage::exists($post->image))
-               Storage::delete($post->image);
+            if (Storage::exists($post->image))
+                Storage::delete($post->image);
 
-            // Nomear Imagem para posts . extensao 
-            $nameFile = Str::of($request->tilte)->slug('-'). '.' . $request->image->getClientOriginalExtension();
+            $nameFile = Str::of($request->title)->slug('-') . '.' .$request->image->getClientOriginalExtension();
 
-            //Criar imagem posts/nomedaimage
             $image = $request->image->storeAs('posts', $nameFile);
             $data['image'] = $image;
         }
 
-
         $post->update($data);
 
         return redirect()
-            ->route('posts.index')
-            ->with('message', 'Post Atualizado com sucesso');
+                ->route('posts.index')
+                ->with('message', 'Post atualizado com sucesso');
     }
-
+    
     public function search(Request $request)
     {
         //Filtrar

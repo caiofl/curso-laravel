@@ -9,7 +9,7 @@
 <form action="{{ route('posts.search') }}" method="post">
     @csrf
     <input type="text" name="search" placeholder="Filtrar:">
-    <button type="submit">Filtrar</button>
+    <button type="submit" class="btn btn-primary">Filtrar</button>
 </form>
 
 
